@@ -37,7 +37,7 @@ export BOTO_USE_ENDPOINT_HEURISTICS=True
 
 cd $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
-ANSIBLE_ARGS="--skip-tags verify --extra-var \"$1"
+ANSIBLE_ARGS="--skip-tags verify --extra-vars \"$1"
 shift
 for v in "$@"; do
     ANSIBLE_ARGS="${ANSIBLE_ARGS} ${v}"
