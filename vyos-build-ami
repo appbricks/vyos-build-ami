@@ -44,7 +44,7 @@ shift
 for v in "$@"; do
     EXTRA_VARS="${EXTRA_VARS} ${v}"
 done
-EXTRA_VARS="${EXTRA_VARS}\""
+EXTRA_VARS="${EXTRA_VARS}"
 
 set -x
 
