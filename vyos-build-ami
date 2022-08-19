@@ -29,8 +29,6 @@ if [ $# -lt 1 ]; then
     exit 1
 fi
 
-ISO_URL=$1
-
 # Allow boto (2) to connect to new regions that aren't built-in
 # (see https://github.com/boto/boto/issues/3783#issuecomment-422990383)
 export BOTO_USE_ENDPOINT_HEURISTICS=True
@@ -41,4 +39,4 @@ cd $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 ANSIBLE_ARGS="--skip-tags verify"
 
-ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook playbooks/vyos-build-ami.yml -vvv -i hosts --private-key=playbooks/files/ssh-keys/vyos-build-ami.pem $ANSIBLE_ARGS $2
+ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook playbooks/vyos-build-ami.yml -vvv -i hosts --private-key=playbooks/files/ssh-keys/vyos-build-ami.pem $ANSIBLE_ARGS $@
