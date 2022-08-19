@@ -25,7 +25,7 @@ fi
 # Get arguments
 
 if [ $# -lt 1 ]; then
-    echo "Usage: $0 '<ansible extra vars>'"
+    echo "Usage: $0 iso=<ISO URL> <extra vars>"
     exit 1
 fi
 
@@ -37,11 +37,13 @@ export BOTO_USE_ENDPOINT_HEURISTICS=True
 
 cd $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
-ANSIBLE_ARGS="--skip-tags verify --extra-var '$1'"
+ANSIBLE_ARGS="--skip-tags verify --extra-var \"$1"
 shift
-
-set -x
+for v in "$@"; do
+    ANSIBLE_ARGS="${ANSIBLE_ARGS} ${v}"
+done
+ANSIBLE_ARGS="${ANSIBLE_ARGS}\""
 
 ANSIBLE_HOST_KEY_CHECKING=False \
     ansible-playbook playbooks/vyos-build-ami.yml \
-    -vvv -i hosts --private-key=playbooks/files/ssh-keys/vyos-build-ami.pem $ANSIBLE_ARGS $@
+    -vvv -i hosts --private-key=playbooks/files/ssh-keys/vyos-build-ami.pem $ANSIBLE_ARGS
