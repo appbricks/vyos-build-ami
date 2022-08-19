@@ -37,15 +37,17 @@ export BOTO_USE_ENDPOINT_HEURISTICS=True
 
 cd $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
-ANSIBLE_ARGS="--skip-tags verify --extra-vars \"$1"
+ANSIBLE_ARGS="--skip-tags verify"
+
+EXTRA_VARS="$1"
 shift
 for v in "$@"; do
-    ANSIBLE_ARGS="${ANSIBLE_ARGS} ${v}"
+    EXTRA_VARS="${EXTRA_VARS} ${v}"
 done
-ANSIBLE_ARGS="${ANSIBLE_ARGS}\""
+EXTRA_VARS="${EXTRA_VARS}\""
 
 set -x
 
 ANSIBLE_HOST_KEY_CHECKING=False \
     ansible-playbook playbooks/vyos-build-ami.yml \
-    -vvv -i hosts --private-key=playbooks/files/ssh-keys/vyos-build-ami.pem $ANSIBLE_ARGS
+    -vvv -i hosts --private-key=playbooks/files/ssh-keys/vyos-build-ami.pem $ANSIBLE_ARGS --extra-vars "$EXTRA_VARS"
