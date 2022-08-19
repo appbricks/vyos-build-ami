@@ -10,8 +10,6 @@
 
 # Check dependencies
 
-set -x
-
 which aws 2>&1 >/dev/null
 if [ $? -ne 0 ]; then
     echo "awscli is not installed or is not in your $PATH"
@@ -24,6 +22,13 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+# Get arguments
+
+if [ $# -lt 1 ]; then
+    echo "Usage: $0 '<ansible extra vars>'"
+    exit 1
+fi
+
 # Allow boto (2) to connect to new regions that aren't built-in
 # (see https://github.com/boto/boto/issues/3783#issuecomment-422990383)
 export BOTO_USE_ENDPOINT_HEURISTICS=True
@@ -32,9 +37,9 @@ export BOTO_USE_ENDPOINT_HEURISTICS=True
 
 cd $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
-ANSIBLE_ARGS="--skip-tags verify"
+ANSIBLE_ARGS="--skip-tags verify -e '$1'"
+shift
 
 echo ANSIBLE_HOST_KEY_CHECKING=False \
     ansible-playbook playbooks/vyos-build-ami.yml \
-    -vvv -i hosts --private-key=playbooks/files/ssh-keys/vyos-build-ami.pem $ANSIBLE_ARGS \
-    -e "$@"
+    -vvv -i hosts --private-key=playbooks/files/ssh-keys/vyos-build-ami.pem $ANSIBLE_ARGS $@
