@@ -40,6 +40,6 @@ cd $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 ANSIBLE_ARGS="--skip-tags verify -e '$1'"
 shift
 
-echo ANSIBLE_HOST_KEY_CHECKING=False \
+ANSIBLE_HOST_KEY_CHECKING=False \
     ansible-playbook playbooks/vyos-build-ami.yml \
     -vvv -i hosts --private-key=playbooks/files/ssh-keys/vyos-build-ami.pem $ANSIBLE_ARGS $@
