@@ -10,6 +10,8 @@
 
 # Check dependencies
 
+set -x
+
 which aws 2>&1 >/dev/null
 if [ $? -ne 0 ]; then
     echo "awscli is not installed or is not in your $PATH"
@@ -19,13 +21,6 @@ fi
 which ansible 2>&1 >/dev/null
 if [ $? -ne 0 ]; then
     echo "ansible is not installed or is not in your $PATH"
-    exit 1
-fi
-
-# Get arguments
-
-if [ $# -lt 1 ]; then
-    echo "Usage: $0 <ISO URL>"
     exit 1
 fi
 
